@@ -1,4 +1,4 @@
-name: Build tm1602_exporter image
+name: Build tm3402_exporter image
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
       - master
 
 env:
-  IMAGE_NAME: tm1602-exporter
+  IMAGE_NAME: tm3402-exporter
 
 jobs:
   push:

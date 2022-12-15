@@ -1,6 +1,6 @@
-# Arris Touchstone TM1602 statistics exporter for Prometheus
+# Arris TM3402 statistics exporter for Prometheus
 
-This is exporter for Prometheus for Arris Touchstone TM1602 cable modem.
+This is exporter for Prometheus for Arris TM3402 cable modem.
 
 ## How to run
 

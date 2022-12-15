@@ -1,4 +1,4 @@
 scrape_configs:
-    - job_name: tm1602
+    - job_name: tm3402
       static_configs:
-          - targets: [tm1602_exporter:9116]
+          - targets: [tm3402_exporter:9116]

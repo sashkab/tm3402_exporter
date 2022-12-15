@@ -1,6 +1,6 @@
-"""Arris Touchstone TM1602 Collector for Prometheus"""
+"""Arris Touchstone TM3402 Collector for Prometheus"""
 
-__version__ = "0.0.3"
+__version__ = "0.0.1"
 
 from datetime import datetime
 from pathlib import Path
@@ -14,16 +14,20 @@ from prometheus_client.core import GaugeMetricFamily, CounterMetricFamily
 
 # FIXME: use logger
 
+import urllib3
+
+urllib3.disable_warnings()  # We are disabling warning, because of self signed ssl certificate. I know this is wrong.
+
 
 class Collector:
-    """Arris Touchstone TM1602 collector for Prometheus"""
+    """Arris Touchstone TM3402 collector for Prometheus"""
 
-    _prefix = 'tm1602'
+    _prefix = 'tm3402'
     seconds_between_fetch = 30
     ids = ("dcid", "ucid", "freq")
     counter = ("octets", "correcteds", "uncorrectables")
 
-    def __init__(self, url="http://192.168.100.1/cgi-bin/status_cgi"):
+    def __init__(self, url="https://192.168.100.1/cgi-bin/status_cgi"):
         """Initialize"""
 
         self.page = None
@@ -37,13 +41,13 @@ class Collector:
         print(f"get_table, {(now - self.last_fetch).seconds}", flush=True)
         if self.page is None or (now - self.last_fetch).seconds > self.seconds_between_fetch:
             print(f"Fetching {self.url}", flush=True)
-            r = requests.get(self.url)
+            r = requests.get(self.url, verify=False)
             r.raise_for_status()
             self.page = r.text
             self.last_fetch = now
 
         soup = BeautifulSoup(self.page, 'html.parser')
-        return soup.find('h4', string=lambda s: table_id in s).find_next_siblings('table', {"border": 2})[0]
+        return soup.find('h4', string=lambda s: table_id in s).find_next_siblings('table', {"class": "heading2"})[0]
 
     def _make_header(self, text):
         """lower case and replace special symbols with underscores"""
@@ -63,7 +67,6 @@ class Collector:
 
     def parse_html_table(self, table_name):
         """Parse html table, return list of dicts"""
-
         rows = self.get_table(table_name).find_all('tr')
         header = ['channel'] + [self._make_header(h) for h in self._process_row(rows[0], is_header=True)]
         return [dict(zip(header, self._process_row(row))) for row in rows[1:]]
@@ -107,7 +110,7 @@ class Collector:
         """Returns metrics to prometheus client"""
 
         metrics = []
-        metrics.extend(self.process_table(f"{self._prefix}_downstream", self.parse_html_table('Downstream')))
-        metrics.extend(self.process_table(f"{self._prefix}_upstream", self.parse_html_table('Upstream')))
+        metrics.extend(self.process_table(f"{self._prefix}_downstream", self.parse_html_table('Downstream QAM')))
+        metrics.extend(self.process_table(f"{self._prefix}_upstream", self.parse_html_table('Upstream QAM')))
 
         return metrics

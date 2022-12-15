@@ -1,6 +1,6 @@
 FROM python:3.10-alpine as builder
 
-LABEL description="tm1602-exporter" maintainer="github@compuix.com" version="2022.03.22"
+LABEL description="tm3402-exporter" maintainer="github@compuix.com" version="2022.12.14"
 
 COPY ./  /src/
 WORKDIR /src
@@ -15,9 +15,9 @@ COPY --from=builder /wheel/*.whl /wheel/
 
 ENV PYTHONUNBUFFERED "x"
 
-RUN python3 -mpip install -f /wheel --no-index tm1602_exporter \
+RUN python3 -mpip install -f /wheel --no-index tm3402_exporter \
     && rm -r /wheel
 
 EXPOSE 9116
 
-CMD [ "/usr/local/bin/tm1602_exporter" ]
+CMD [ "/usr/local/bin/tm3402_exporter" ]

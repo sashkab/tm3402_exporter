@@ -35,7 +35,7 @@ def test_get_doc(tcollector):
 
 
 def test_get_table0(tcollector):
-    t = tcollector.get_table('Downstream')
+    t = tcollector.get_table('Downstream QAM')
     assert 'Downstream 1' in str(t)
 
     t = tcollector.get_table('Upstream')
@@ -46,34 +46,34 @@ def test_get_table1(tcollector, requests_mock):
     requests_mock.get(tcollector.url, text=tcollector.page)
     tcollector.page = None
 
-    t = tcollector.get_table('Downstream')
+    t = tcollector.get_table('Downstream QAM')
     assert 'Downstream 1' in str(t)
 
-    t = tcollector.get_table('Upstream')
+    t = tcollector.get_table('Upstream QAM')
     assert 'Upstream 1' in str(t)
 
 
 def test_parse_html_table(tcollector):
-    assert tcollector.parse_html_table('Downstream')[0] == {
+    assert tcollector.parse_html_table('Downstream QAM')[0] == {
         'channel': 'Downstream 1',
-        'dcid': '6',
-        'freq': '609.00 MHz',
-        'power': '5.70 dBmV',
-        'snr': '38.98 dB',
-        'modulation': '256QAM',
-        'octets': '38391590',
         'correcteds': '0',
-        'uncorrectables': '0'
-    }
+        'dcid': '1',
+        'freq': '525.00 MHz',
+        'modulation': '256QAM',
+        'octets': '16707641166',
+        'power': '6.90 dBmV',
+        'snr': '40.95 dB',
+        'uncorrectables': '0',
+        }
 
-    assert tcollector.parse_html_table('Upstream')[0] == {
+    assert tcollector.parse_html_table('Upstream QAM')[0] == {
         'channel': 'Upstream 1',
-        'ucid': '2',
-        'freq': '22.00 MHz',
-        'power': '45.25 dBmV',
         'channel_type': 'DOCSIS2.0 (ATDMA)',
+        'freq': '30.40 MHz',
+        'modulation': '64QAM',
+        'power': '41.50 dBmV',
         'symbol_rate': '5120 kSym/s',
-        'modulation': '64QAM'
+        'ucid': '2',
         }
 
 
@@ -110,5 +110,5 @@ def test_collect(tcollector):
     c = tcollector.collect()
     # FIXME
 
-    assert len(c) == (24 * 6 +   # 24 downstream channels with 6 metrics per channel
+    assert len(c) == (28 * 6 +   # 28 downstream channels with 6 metrics per channel
                       4 * 3)     # 4 upstream channels with 3 metrics per channel
