@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='tm3402_exporter',
-    version='0.0.3',
+    version='0.0.4',
     description='Arris Touchstone tm3402 Collector for Prometheus',
     author='Aleks Bunin',
     author_email='github@compuix.com',
@@ -22,6 +22,6 @@ setup(
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.12',
     ],
 )

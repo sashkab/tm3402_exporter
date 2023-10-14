@@ -1,6 +1,6 @@
 """Arris Touchstone TM3402 Collector for Prometheus"""
 
-__version__ = "0.0.1"
+__version__ = "0.0.4"
 
 from datetime import datetime
 from pathlib import Path
