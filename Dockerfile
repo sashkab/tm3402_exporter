@@ -1,6 +1,6 @@
-FROM python:3.10-alpine as builder
+FROM python:3.12-alpine as builder
 
-LABEL description="tm3402-exporter" maintainer="github@compuix.com" version="2022.12.14"
+LABEL description="tm3402-exporter" maintainer="github@compuix.com" version="2023.10.13"
 
 COPY ./  /src/
 WORKDIR /src
@@ -9,7 +9,7 @@ RUN python3 -mpip install -U pip setuptools wheel tox \
     && python3 -mpip wheel -w /wheel . \
     && tox
 
-FROM python:3.10-alpine
+FROM python:3.12-alpine
 
 COPY --from=builder /wheel/*.whl /wheel/
 
