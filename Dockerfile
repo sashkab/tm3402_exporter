@@ -1,6 +1,6 @@
 FROM python:3.12-alpine as builder
 
-LABEL description="tm3402-exporter" maintainer="github@compuix.com" version="2023.10.13"
+LABEL description="tm3402-exporter" maintainer="github@compuix.com" version="2023.11.30"
 
 COPY ./  /src/
 WORKDIR /src
